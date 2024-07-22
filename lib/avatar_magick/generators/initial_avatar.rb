@@ -1,4 +1,5 @@
 require "dragonfly/hash_with_css_style_keys"
+require "dragonfly/image_magick/commands"
 
 module AvatarMagick
   module Generators
@@ -7,6 +8,8 @@ module AvatarMagick
     # the first 3 words in string. Can be customized with background color,
     # text color, font, and size.
     class InitialAvatar
+      include Dragonfly::ImageMagick::Commands
+
       def call(content, string, opts={})
         opts = ::Dragonfly::HashWithCssStyleKeys[opts]
         args = []
@@ -36,13 +39,13 @@ module AvatarMagick
         args.push("-background #{background}")
         args.push("label:#{text}")
 
-        content.generate!(:convert, args.join(' '), format)
+        generate(content, args.join(' '), format)
 
         args.clear
         args.push("-gravity center")
         args.push("-extent #{w}x#{h}")
 
-        content.process!(:convert, args.join(' '))
+        convert(content, args.join(' '), format)
 
         content.add_meta('format' => format, 'name' => "avatar.#{format}")
       end

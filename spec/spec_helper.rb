@@ -20,8 +20,7 @@ end
 
 def test_avatar_magick_app
   test_app.configure do
-    generator :convert, Dragonfly::ImageMagick::Generators::Convert.new
-    processor :convert, Dragonfly::ImageMagick::Processors::Convert.new
+    plugin :imagemagick
     plugin :avatarmagick
   end
 end
